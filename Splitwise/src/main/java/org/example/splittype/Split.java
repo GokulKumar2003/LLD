@@ -1,0 +1,19 @@
+package org.example.splittype;
+
+import org.example.User;
+
+public abstract class Split {
+    protected User user;
+    protected double amount;
+
+    public Split(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public abstract double getAmount();
+
+}
