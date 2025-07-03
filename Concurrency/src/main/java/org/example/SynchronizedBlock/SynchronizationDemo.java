@@ -1,9 +1,13 @@
 package org.example.SynchronizedBlock;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static java.lang.Thread.sleep;
+
 /* This demo is to understand synchronization block */
 public class SynchronizationDemo {
 
-    private static int counter;
+    private static AtomicInteger counter = new AtomicInteger(0);
     private static Object lock = new Object();
     public static void main(String args[]) throws InterruptedException{
 
@@ -22,13 +26,18 @@ public class SynchronizationDemo {
 
     public static void increment(){
 //        synchronized (lock){
-            counter++;
+            counter.getAndIncrement();
 //        }
     }
     public static class Thread1 implements Runnable{
 
         public void run(){
-            for(int i=0;i<1000000;i++){
+            for(int i=0;i<10000000;i++){
+                try{
+                    sleep(1);
+                }catch (InterruptedException e){
+                    System.out.println("Interupted Exception");
+                }
                 increment();
             }
         }
@@ -37,7 +46,7 @@ public class SynchronizationDemo {
     public static class Thread2 implements Runnable{
 
         public void run(){
-            for(int i=0;i<1000000;i++){
+            for(int i=0;i<10000000;i++){
                 increment();
             }
         }
