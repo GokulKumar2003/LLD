@@ -1,7 +1,11 @@
-package org.example.entity;
-
+package org.example;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.entity.*;
+import org.example.entity.Book;
+import org.example.entity.Catalog;
+import org.example.entity.Loan;
+import org.example.entity.User;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -40,7 +44,7 @@ public class Library {
     }
 
     public BookItem addBookItem(String ISBN, String title, String author,
-                               String topic){
+                                String topic){
 
         Book book = new Book(title, author, ISBN, topic);
         books.put(book.getISBN(), book);
@@ -58,29 +62,29 @@ public class Library {
 
     public boolean borrowBook(String memberId, String barcode, long days){
 
-       User user = users.get(memberId);
-       BookItem bookItem = catalog.getBookItemByBarcode(barcode);
+        User user = users.get(memberId);
+        BookItem bookItem = catalog.getBookItemByBarcode(barcode);
 
-       if(user == null){
-           System.out.println("Invalid User");
-           return false;
-       }
-       if(bookItem == null){
-           System.out.println("Invalid book. Please register the book before " +
-                   "issuing.");
-           return false;
-       }
+        if(user == null){
+            System.out.println("Invalid User");
+            return false;
+        }
+        if(bookItem == null){
+            System.out.println("Invalid book. Please register the book before " +
+                    "issuing.");
+            return false;
+        }
 
-       if(user.getBorrowedCount() >= MAX_BOOKS_PER_MEMBER){
-           System.out.println("Member has reached the max borrowing limit. " +
-                   "Please return the old books to borrow new ones");
-           return false;
-       }
+        if(user.getBorrowedCount() >= MAX_BOOKS_PER_MEMBER){
+            System.out.println("Member has reached the max borrowing limit. " +
+                    "Please return the old books to borrow new ones");
+            return false;
+        }
 
-       bookItem.markBorrowed();
-       Loan loan = new Loan(bookItem, user, days);
-       user.addLoan(loan);
-       loans.put(loan.getLoanId(), loan);
+        bookItem.markBorrowed();
+        Loan loan = new Loan(bookItem, user, days);
+        user.addLoan(loan);
+        loans.put(loan.getLoanId(), loan);
 
         System.out.printf("Successfully issued %s to %s.",
                 bookItem.getBook().getTitle(), user.getName());

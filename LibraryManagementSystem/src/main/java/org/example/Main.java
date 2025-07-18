@@ -2,7 +2,6 @@ package org.example;
 
 import org.example.entity.Book;
 import org.example.entity.BookItem;
-import org.example.entity.Library;
 import org.example.entity.User;
 
 import java.util.List;
